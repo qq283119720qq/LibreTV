@@ -1,0 +1,67 @@
+{
+  "channels": [
+    {
+      "id": "cctv-news",
+      "name": "CCTV+ 新闻",
+      "logo": "https://upload.wikimedia.org/wikipedia/zh/thumb/9/9c/CCTV-13_Logo.png/200px-CCTV-13_Logo.png",
+      "url": "https://cd-live-stream.news.cctvplus.com/live/smil:CHANNEL2.smil/playlist.m3u8",
+      "categories": ["news"],
+      "country": "china",
+      "language": "chinese"
+    },
+    {
+      "id": "cgtn-america",
+      "name": "CGTN 美洲",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/CGTN.svg/200px-CGTN.svg.png",
+      "url": "https://global.cgtn.cicc.media.caton.cloud/master/cgtn-america.m3u8",
+      "categories": ["news", "international"],
+      "country": "china",
+      "language": "english"
+    },
+    {
+      "id": "bread-tv",
+      "name": "Bread TV",
+      "logo": "./image/retrotv_5520.png",
+      "url": "https://video.bread-tv.com:8091/hls-live24/online/index.m3u8",
+      "categories": ["entertainment"],
+      "country": "international",
+      "language": "various"
+    },
+    {
+      "id": "cctv-1",
+      "name": "CCTV-1 综合",
+      "logo": "https://upload.wikimedia.org/wikipedia/zh/6/65/CCTV-1_Logo.png",
+      "url": "http://stream10.fjtv.net/cctv1/sd/live.m3u8",
+      "categories": ["entertainment", "news"],
+      "country": "china",
+      "language": "chinese"
+    },
+    {
+      "id": "cctv-9",
+      "name": "CCTV-9 纪录",
+      "logo": "https://upload.wikimedia.org/wikipedia/zh/1/11/CCTV-9_Logo.png",
+      "url": "http://stream10.fjtv.net/cctv9/sd/live.m3u8",
+      "categories": ["documentary"],
+      "country": "china",
+      "language": "chinese"
+    },
+    {
+      "id": "cctv-5",
+      "name": "CCTV-5 体育",
+      "logo": "https://upload.wikimedia.org/wikipedia/zh/3/33/CCTV-5_Logo.png",
+      "url": "http://stream10.fjtv.net/cctv5/sd/live.m3u8",
+      "categories": ["sports"],
+      "country": "china",
+      "language": "chinese"
+    },
+    {
+      "id": "phoenix-chinese",
+      "name": "凤凰卫视中文",
+      "logo": "https://upload.wikimedia.org/wikipedia/zh/thumb/3/34/Phoenix_Chinese.svg/200px-Phoenix_Chinese.svg.png",
+      "url": "http://play-live.ifeng.com/live/06OLEGEGM4G.m3u8",
+      "categories": ["news", "international"],
+      "country": "china",
+      "language": "chinese"
+    }
+  ]
+}

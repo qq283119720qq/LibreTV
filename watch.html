@@ -5,6 +5,34 @@
     <meta http-equiv="refresh" content="0; url=player.html">
     <title>重定向到播放器</title>
     <link rel="manifest" href="manifest.json">
+    <script>
+        // 检查是否是直播内容，传递正确的参数
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const isLive = urlParams.get('isLive') === 'true';
+            const url = urlParams.get('url');
+            const title = urlParams.get('title');
+            const logo = urlParams.get('logo');
+            
+            if (url) {
+                let redirectUrl = `player.html?url=${encodeURIComponent(url)}`;
+                
+                if (title) {
+                    redirectUrl += `&title=${encodeURIComponent(title)}`;
+                }
+                
+                if (isLive) {
+                    redirectUrl += '&isLive=true';
+                    
+                    if (logo) {
+                        redirectUrl += `&logo=${encodeURIComponent(logo)}`;
+                    }
+                }
+                
+                window.location.href = redirectUrl;
+            }
+        };
+    </script>
 </head>
 <body>
     <p>如果您没有被自动重定向，请<a href="player.html">点击这里</a>前往播放页面。</p>

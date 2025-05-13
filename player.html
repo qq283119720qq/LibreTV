@@ -198,6 +198,47 @@
                 margin-bottom: 4px;
             }
         }
+        /* 添加直播指示器样式 */
+        .live-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 5px 10px;
+            border-radius: 20px;
+            z-index: 30;
+        }
+        
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #ff3e3e;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+            margin-right: 5px;
+        }
+        
+        .live-text {
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* ...existing styles... */
     </style>
 </head>
 <body>
@@ -404,6 +445,7 @@
         let adFilteringEnabled = true; // 默认开启广告过滤
         let progressSaveInterval = null; // 定期保存进度的计时器
         let currentVideoUrl = ''; // 记录当前实际的视频URL
+        let isLiveStream = false; // 是否为直播流
 
         // 页面加载
         document.addEventListener('DOMContentLoaded', function() {

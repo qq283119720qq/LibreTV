@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LibreTV 直播 - 免费在线直播观看平台</title>
+    <meta name="description" content="LibreTV直播频道，提供多种免费直播内容，无广告、安全，无需注册即可观看。">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="./image/retrotv_5520.png">
+    <link rel="apple-touch-icon" href="./image/retrotv_5520.png">
+    <link rel="manifest" href="manifest.json">
+    
+    <script src="libs/tailwindcss.min.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="page-bg text-white">
+    <!-- 历史记录按钮 -->
+    <div class="fixed top-4 left-4 z-10">
+        <button onclick="toggleHistory(event)" class="bg-[#222] hover:bg-[#333] border border-[#333] hover:border-white rounded-lg px-3 py-1.5 transition-colors" aria-label="观看历史">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- 设置按钮 -->
+    <div class="fixed top-4 right-4 z-10">
+        <button onclick="toggleSettings(event)" class="bg-[#222] hover:bg-[#333] border border-[#333] hover:border-white rounded-lg px-3 py-1.5 transition-colors" aria-label="打开设置">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+        </button>
+    </div>
+    
+    <!-- 历史记录面板 -->
+    <div id="historyPanel" class="history-panel fixed left-0 top-0 h-full bg-[#111] border-r border-[#333] p-6 z-40 transform -translate-x-full transition-transform duration-300" aria-label="观看历史" aria-hidden="true">
+        <!-- history panel content -->
+    </div>
+
+    <!-- 设置面板 -->
+    <div id="settingsPanel" class="settings-panel fixed right-0 top-0 h-full w-80 bg-[#111] border-l border-[#333] p-6 z-40 overflow-y-auto" aria-label="设置面板" aria-hidden="true">
+        <!-- settings panel content -->
+    </div>
+
+    <div class="container mx-auto px-4 py-8 flex flex-col min-h-screen">
+        <div class="flex-1 flex flex-col">
+            <!-- 网站标志和导航 -->
+            <header class="mb-8">
+                <div class="flex justify-between items-center mb-6">
+                    <a href="/" class="flex items-center">
+                        <svg class="w-8 h-8 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                        <h1 class="text-3xl font-bold gradient-text">LibreTV<span class="ml-2 text-pink-500">直播</span></h1>
+                    </a>
+                    <div class="flex space-x-4">
+                        <a href="/" class="px-4 py-2 bg-[#222] hover:bg-[#333] border border-[#333] text-white rounded-lg transition-colors">视频搜索</a>
+                    </div>
+                </div>
+                <div class="flex items-stretch mb-6 h-12 shadow-lg rounded-lg overflow-hidden">
+                    <input 
+                        type="text" 
+                        id="channelSearchInput" 
+                        class="flex-1 bg-[#111] border border-[#333] text-white px-6 py-3 focus:outline-none transition-colors" 
+                        placeholder="搜索直播频道..." 
+                        autocomplete="off"
+                        aria-label="直播频道搜索框">
+                    <button 
+                        onclick="searchChannels()" 
+                        class="w-24 flex items-center justify-center bg-white text-black font-medium hover:bg-gray-200 transition-colors" 
+                        aria-label="搜索按钮">
+                        搜索
+                    </button>
+                </div>
+            </header>
+
+            <!-- 频道类别切换 -->
+            <div class="mb-6 overflow-x-auto">
+                <div class="flex space-x-2 pb-2" id="categoryTabs">
+                    <button class="px-4 py-2 bg-pink-600 text-white rounded-lg category-tab" data-category="all">全部频道</button>
+                    <button class="px-4 py-2 bg-[#222] hover:bg-[#333] text-white rounded-lg category-tab" data-category="news">新闻资讯</button>
+                    <button class="px-4 py-2 bg-[#222] hover:bg-[#333] text-white rounded-lg category-tab" data-category="entertainment">娱乐综艺</button>
+                    <button class="px-4 py-2 bg-[#222] hover:bg-[#333] text-white rounded-lg category-tab" data-category="documentary">纪录片</button>
+                    <button class="px-4 py-2 bg-[#222] hover:bg-[#333] text-white rounded-lg category-tab" data-category="sports">体育赛事</button>
+                    <button class="px-4 py-2 bg-[#222] hover:bg-[#333] text-white rounded-lg category-tab" data-category="international">国际频道</button>
+                </div>
+            </div>
+
+            <!-- 频道列表 -->
+            <div id="channelListContainer" class="mb-8">
+                <div id="channelsList" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                    <!-- 频道卡片将动态插入这里 -->
+                </div>
+            </div>
+
+            <!-- 没有结果时显示 -->
+            <div id="noResults" class="hidden text-center py-16">
+                <svg class="mx-auto h-12 w-12 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h3 class="mt-2 text-lg font-medium text-gray-400">未找到匹配的频道</h3>
+                <p class="mt-1 text-sm text-gray-500">请尝试其他关键词或选择不同分类</p>
+            </div>
+
+            <!-- 加载动画 -->
+            <div id="loadingChannels" class="text-center py-16">
+                <div class="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                <p class="text-gray-400">加载频道列表中...</p>
+            </div>
+        </div>
+
+        <!-- 页脚区域 -->
+        <footer class="footer mt-8 py-6 border-t border-[#333] bg-[#0a0a0a]">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <div class="flex items-center justify-center md:justify-start">
+                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                            </svg>
+                            <span class="gradient-text font-bold">LibreTV</span>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-2 text-center md:text-left">© 2025 LibreTV - 自由观影，畅享精彩</p>
+                    </div>
+                    
+                    <div class="text-center md:text-right">
+                        <p class="text-gray-500 text-sm max-w-md">
+                            免责声明：本站仅为直播搜索工具，不存储、上传或分发任何视频内容。
+                            所有直播源均来自公开互联网。如有侵权，请联系相关内容提供方。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 错误提示框 -->
+    <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300 opacity-0 -translate-y-full z-50">
+        <p id="toastMessage"></p>
+    </div>
+
+    <!-- 添加 loading 提示框 -->
+    <div id="loading" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50">
+        <div class="bg-[#111] p-8 rounded-lg border border-[#333] flex items-center space-x-4">
+            <div class="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+            <p class="text-white text-lg">加载中...</p>
+        </div>
+    </div>
+
+    <!-- 引入脚本 -->
+    <script src="js/config.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/password.js"></script>
+    <script src="js/live.js"></script>
+</body>
+</html>
