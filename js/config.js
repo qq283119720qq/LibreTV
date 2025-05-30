@@ -260,30 +260,3 @@ const CUSTOM_API_CONFIG = {
 
 // 隐藏内置黄色采集站API的变量
 const HIDE_BUILTIN_ADULT_APIS = false;
-
-// CORS代理配置 - 新增功能
-const CORS_PROXY_CONFIG = {
-    // 是否启用第三方CORS代理（false则使用内置代理）
-    useThirdPartyProxy: true,
-    
-    // 第三方CORS代理URL列表（按优先级排序，失败时依次尝试下一个）
-    thirdPartyProxies: [
-        'https://cors-proxy.htmldriven.com/?url=',
-        'https://whateverorigin.org/get?url=',
-        'https://api.allorigins.win/get?url=',
-        'https://proxy.cors.sh/',
-        'https://corsproxy.io/?'
-    ],
-    
-    // 第三方代理的超时时间（毫秒）
-    thirdPartyTimeout: 8000,
-    
-    // 内置代理URL（当第三方代理全部失败时的备选）
-    internalProxy: '/proxy/',
-    
-    // 是否在第三方代理失败后自动降级到内置代理
-    fallbackToInternal: true,
-    
-    // 调试模式：在控制台输出代理切换信息
-    debugMode: false
-};

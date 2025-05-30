@@ -457,8 +457,8 @@ async function fetchDoubanData(url) {
     };
 
     try {
-        // 使用智能代理管理器
-        const response = await smartFetch(url, fetchOptions);
+        // 尝试直接访问（豆瓣API可能允许部分CORS请求）
+        const response = await fetch(PROXY_URL + encodeURIComponent(url), fetchOptions);
         clearTimeout(timeoutId);
         
         if (!response.ok) {
@@ -467,8 +467,30 @@ async function fetchDoubanData(url) {
         
         return await response.json();
     } catch (err) {
-        console.error("豆瓣 API 请求失败：", err);
-        throw err;
+        console.error("豆瓣 API 请求失败（直接代理）：", err);
+        
+        // 失败后尝试备用方法：作为备选
+        const fallbackUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+        
+        try {
+            const fallbackResponse = await fetch(fallbackUrl);
+            
+            if (!fallbackResponse.ok) {
+                throw new Error(`备用API请求失败! 状态: ${fallbackResponse.status}`);
+            }
+            
+            const data = await fallbackResponse.json();
+            
+            // 解析原始内容
+            if (data && data.contents) {
+                return JSON.parse(data.contents);
+            } else {
+                throw new Error("无法获取有效数据");
+            }
+        } catch (fallbackErr) {
+            console.error("豆瓣 API 备用请求也失败：", fallbackErr);
+            throw fallbackErr; // 向上抛出错误，让调用者处理
+        }
     }
 }
 
