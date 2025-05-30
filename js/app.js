@@ -1279,15 +1279,14 @@ async function importConfigFromUrl() {
         showLoading('正在从URL导入配置...');
         
         try {
-            // 获取配置文件 - 直接请求URL
-            const response = await fetch(url, {
-                mode: 'cors',
+            // 使用智能代理获取配置文件
+            const response = await smartFetch(url, {
                 headers: {
                     'Accept': 'application/json'
                 }
             });
             if (!response.ok) throw '获取配置文件失败';
-
+            
             // 验证响应内容类型
             const contentType = response.headers.get('content-type');
             if (!contentType || !contentType.includes('application/json')) {
